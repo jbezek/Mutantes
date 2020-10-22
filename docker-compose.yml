@@ -1,0 +1,29 @@
+services:
+  mutantes-db-meli:
+    image: mongo:latest
+    container_name: "mutantes-db-meli"
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - 27017:27017
+  mutantes-meli:
+    build: .
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mutantes-db-meli:27017/mutanteDB
+    container_name: mutantes-meli
+    ports:
+      - 8080:8080
+    depends_on:
+      - mutantes-db-meli
+    links:
+      - mutantes-db-meli
+  swagger_ui:
+    environment:
+    - SWAGGER_JSON=/swagger.json
+    image:   "swaggerapi/swagger-ui"
+    volumes: 
+      - ./swagger.json:/swagger.json
+    restart: always
+    ports:   ["9000:8080"]
+volumes:
+  mongodb:

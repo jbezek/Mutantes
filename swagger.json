@@ -1,0 +1,110 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "APIs",
+		"description": "Documentation APIs v1.0",
+		"version": "1.0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:8080",
+			"description": "Generated server url"
+		}
+	],
+	"paths": {
+		"/mutant": {
+			"post": {
+				"tags": [
+					"mutante-rest-controller"
+				],
+				"description": "Verifies the given DNA and determine if it belongs to a mutant",
+				"operationId": "mutant",
+				"parameters": [
+					{
+						"name": "dna",
+						"description": "DNA for verification.",
+						"required": true
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MutantMatrixValueObject"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"type": "object",
+									"additionalProperties": {
+										"type": "object"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/stats": {
+			"get": {
+				"tags": [
+					"mutante-rest-controller"
+				],
+				"description": "Get stats of verified human and mutant DNAs.",
+				"operationId": "stats",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/StatsValueObject"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"MutantMatrixValueObject": {
+				"type": "object",
+				"properties": {
+					"dna": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"StatsValueObject": {
+				"type": "object",
+				"properties": {
+					"count_mutant_dna": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"count_human_dna": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"ratio": {
+						"type": "number",
+						"format": "float"
+					}
+				}
+			}
+		}
+	}
+}
